@@ -1,8 +1,8 @@
 ﻿$days = Read-Host "How many days?"
 
+$loginoutsTable = @()
 $loginouts = Get-EventLog system -source Microsoft-Windows-Winlogon  -After (Get-Date).AddDays(-$days)
 
-$loginoutsTable = @()
 for($i=0; $i -lt $loginouts.Count; $i++) {
 
     $event = ""
@@ -20,11 +20,9 @@ for($i=0; $i -lt $loginouts.Count; $i++) {
                                         }
 }
 
-$loginoutsTable
-
+$powereventsTable = @()
 $powerevents = Get-EventLog -LogName system -After (Get-Date).AddDays(-$days) | Where EventID -in 6005,6006
 
-$powereventsTable = @()
 for($i=0; $i -lt $powerevents.Count; $i++) {
 
     $event = ""
@@ -41,5 +39,3 @@ for($i=0; $i -lt $powerevents.Count; $i++) {
                                            "User" = "System";
                                           }
 }
-
-$powereventsTable
