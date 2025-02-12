@@ -1,7 +1,23 @@
-﻿$logFile = Get-Content -Path C:\xampp\apache\logs\access.log
+﻿function ApacheLogs(){
 
-$logEntries = Get-Content -Path $logFile | Select-String "\s$HttpCode\s"
+$logsNotFormatted = Get-Content C:\xampp\apache\logs\access.log
+$tableRecords = @()
 
-$regex = [regex] "\b(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\b"
+for($i=0; $i -lt $logsNotFormatted.Count; $i++) {
 
-# i struggled with this. instructions on canvas seem slightly unclear
+    $words = $logsNotFormatted[$i] -split " "
+
+      $tableRecords += [PSCustomObject]@{ "IP" = $words[0]; `
+                                          "Time" = $words[3].Trim('['); `
+                                          "Method" = $words[5].Trim('"'); `
+                                          "Page" = $words[6]; `
+                                          "Protocol" = $words[7]; `
+                                          "Response" = $words[8]; `
+                                          "Referrer" = $words[10]; `
+                                          "Client" = $words[11..($words.Count - 1)]; }
+}
+
+    $filteredResults = $tableRecords | Where-Object { $_.IP -like "10.*" }
+    $tableRecords | Format-Table -AutoSize -Wrap
+    Write-Output $filteredResults
+}
