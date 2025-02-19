@@ -1,3 +1,6 @@
 ﻿$scrapedPage = Invoke-WebRequest "http://localhost/tobescraped.html"
 
-$scrapedPage.Links | Select-Object outerText, href
+$divs1 = $scrapedPage.ParsedHtml.body.getElementsByTagName("div") | where { `
+    $_.className -eq "div-green" } | select innerText
+
+$divs1
