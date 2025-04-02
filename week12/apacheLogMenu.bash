@@ -19,7 +19,7 @@ function histogram () {
 	# This is for debugging, print here to see what it does to continue:
 	# echo "$visitsPerDay"
 	:> newtemp.txt
-	echo "$visitsPerDay | while read -r line;
+	echo "$visitsPerDay" | while read -r line;
 	do
 		local withoutHours=$(echo "$line" | cut -d " " -f 2 \
 		 cut -d ":" -f 1)
@@ -66,6 +66,7 @@ do
 
 		7)
 			echo "Quitting..."
+			exit 1
 			;;
 		1)
 			echo "Displaying all logs:"
@@ -95,3 +96,4 @@ do
 			echo "nuh uh"
 			;;
 	esac
+done
