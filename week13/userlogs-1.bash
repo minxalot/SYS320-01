@@ -3,6 +3,9 @@
 authfile="/var/log/auth.log"
 
 function getLogins(){
+	logline=$(cat "$authfile" | grep "systemd-logind" | grep "New session")
+	dateAndUser=$(echo "$logline" | cut -d' ' -f1,2,11 | tr -d '\.')
+	echo "$dateAndUser"
 }
 
 # function getFailedLogins
@@ -10,8 +13,12 @@ function getLogins(){
 # complete the function
 # generate failed logins and test
 
+function getFailedLogins(){
+	
+}
+
 echo "To:lindsey.bellaire@mymail.champlain.edu" > emailform.txt
-echo "Subject: Security incident" >> emailform.txt
+echo "Subject: Logins" >> emailform.txt
 echo "Test" >> emailform.txt
 
 cat emailform.txt | ssmtp lindsey.bellaire@mymail.champlain.edu
@@ -19,3 +26,8 @@ cat emailform.txt | ssmtp lindsey.bellaire@mymail.champlain.edu
 # todo 2
 # send failed logins as an email to yourself
 # similar to sending logins as email
+
+echo "To:lindsey.bellaire@mymail.champlain.edu" > emailform1.txt
+echo "Subject: Failed logins" >> emailform1.txt
+getFailedLogins >> emailform1.txt
+cat emailform1.txt | ssmtp lindsey.bellaire@mymail.champlain.edu
