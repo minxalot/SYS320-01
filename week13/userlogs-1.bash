@@ -14,12 +14,14 @@ function getLogins(){
 # generate failed logins and test
 
 function getFailedLogins(){
-	
+	logline=$(cat "$authfile" | grep "authenticationfailure")
+	dateAndUserFailed=$(echo "$logline" | cut -d' ' -f1,2,1,16 | sed 's/user=/ /')
+	echo "$dateAndUserFailed"
 }
 
 echo "To:lindsey.bellaire@mymail.champlain.edu" > emailform.txt
 echo "Subject: Logins" >> emailform.txt
-echo "Test" >> emailform.txt
+getLogins >> emailform.txt
 
 cat emailform.txt | ssmtp lindsey.bellaire@mymail.champlain.edu
 
@@ -30,4 +32,5 @@ cat emailform.txt | ssmtp lindsey.bellaire@mymail.champlain.edu
 echo "To:lindsey.bellaire@mymail.champlain.edu" > emailform1.txt
 echo "Subject: Failed logins" >> emailform1.txt
 getFailedLogins >> emailform1.txt
+
 cat emailform1.txt | ssmtp lindsey.bellaire@mymail.champlain.edu
