@@ -2,6 +2,9 @@
 
 > "report.txt"
 
+# echo "$1"
+# echo "$2"
+
 logFile="$1"
 iocFile="$2"
 
@@ -13,5 +16,5 @@ while read -r logLine; do
 			page=$(echo "logLine" | cut -d' ' -f7)
 			echo "$ip $timestamp $page" >> report.txt
 		fi
-	done < "iocFile"
-done < "logFile"
+	done < "$iocFile"
+done < "$logFile"
